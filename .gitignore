@@ -1,3 +1,5 @@
 .idea
 /vendor
 /public/result
+.DS_Store
+public/.DS_Store
