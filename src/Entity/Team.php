@@ -4,9 +4,20 @@ namespace App\Entity;
 
 class Team
 {
+    public const PLAYER_POSITION_GOALKEEPER  = 'В';
+    public const PLAYER_POSITION_DEFENDER  = 'З';
+    public const PLAYER_POSITION_MIDFIELDER  = 'П';
+    public const PLAYER_POSITION_FORWARD  = 'Н';
+
     private string $name;
     private string $country;
     private string $logo;
+    private array $statistic = [
+        'Вратарь' => 0,
+        'Защитник' => 0,
+        'Полузащитник' => 0,
+        'Нападающий' => 0
+    ];
     /**
      * @var Player[]
      */
@@ -88,6 +99,33 @@ class Team
         return $this->goals;
     }
 
+    public function getStatsByPosition(): void
+    {
+        foreach ($this->getPlayers() as $player) {
+            $playerPosition = $player->getPosition();
+
+            switch ($playerPosition) {
+                case self::PLAYER_POSITION_GOALKEEPER:
+                    $this->statistic['Вратарь'] += $player->getPlayTime();
+                    break;
+                case self::PLAYER_POSITION_DEFENDER:
+                    $this->statistic['Защитник'] += $player->getPlayTime();
+                    break;
+                case self::PLAYER_POSITION_MIDFIELDER:
+                    $this->statistic['Полузащитник'] += $player->getPlayTime();
+                    break;
+                case self::PLAYER_POSITION_FORWARD:
+                    $this->statistic['Нападающий'] += $player->getPlayTime();
+                    break;
+            }
+        }
+    }
+
+    public function getStatistic(): array
+    {
+        $this->getStatsByPosition();
+        return $this->statistic;
+    }
 
     private function assertCorrectPlayers(array $players)
     {
