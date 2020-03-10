@@ -100,7 +100,7 @@ class Player
 
     public function goToPlay(int $minute): void
     {
-        $this->inMinute = $minute;
+        $this->inMinute = $minute - 1;
         $this->playStatus = self::PLAY_PLAY_STATUS;
     }
 
@@ -108,5 +108,10 @@ class Player
     {
         $this->outMinute = $minute;
         $this->playStatus = self::BENCH_PLAY_STATUS;
+    }
+
+    public function finishMatch(int $minute): void
+    {
+        $this->outMinute = $minute + 1;
     }
 }

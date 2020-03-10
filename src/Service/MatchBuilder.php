@@ -101,8 +101,8 @@ class MatchBuilder
                     break;
                 case 'finishPeriod':
                     if ($period === 2) {
-                        $this->goToBenchAllPlayers($match->getHomeTeam(), $minute);
-                        $this->goToBenchAllPlayers($match->getAwayTeam(), $minute);
+                        $this->finishMatch($match->getHomeTeam(), $minute);
+                        $this->finishMatch($match->getAwayTeam(), $minute);
                     }
                     break;
                 case 'replacePlayer':
@@ -121,11 +121,13 @@ class MatchBuilder
                         $team->getPlayer($details['playerNumber'])->addYellowCard();
                     } else {
                         $team->getPlayer($details['playerNumber'])->addRedCard();
+                        $team->getPlayer($details['playerNumber'])->goToBench($minute);
                     }
                     break;
                 case 'redCard':
                     $team = $this->getTeamByName($match, $details['team']);
                     $team->getPlayer($details['playerNumber'])->addRedCard();
+                    $team->getPlayer($details['playerNumber'])->goToBench($minute);
                     break;
             }
 
@@ -175,6 +177,13 @@ class MatchBuilder
     {
         foreach ($team->getPlayersOnField() as $player) {
             $player->goToBench($minute);
+        }
+    }
+
+    private function finishMatch(Team $team, int $minute)
+    {
+        foreach ($team->getPlayersOnField() as $player) {
+            $player->finishMatch($minute);
         }
     }
 
