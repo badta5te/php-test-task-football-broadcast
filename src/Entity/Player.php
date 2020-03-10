@@ -10,6 +10,8 @@ class Player
     private string $name;
     private string $playStatus;
     private array $goals;
+    private bool $yellowCard;
+    private bool $redCard;
     private int $inMinute;
     private int $outMinute;
 
@@ -19,6 +21,8 @@ class Player
         $this->name = $name;
         $this->playStatus = self::BENCH_PLAY_STATUS;
         $this->goals = [];
+        $this->yellowCard = false;
+        $this->redCard = false;
         $this->inMinute = 0;
         $this->outMinute = 0;
     }
@@ -32,7 +36,7 @@ class Player
     {
         return $this->name;
     }
-    
+
     public function addGoal(int $time): int
     {
         return $this->goals[] = $time;
@@ -41,6 +45,26 @@ class Player
     public function getGoals(): array
     {
         return $this->goals;
+    }
+
+    public function addYellowCard(): bool
+    {
+        return $this->yellowCard = true;
+    }
+
+    public function addRedCard(): bool
+    {
+        return $this->redCard = true;
+    }
+
+    public function hasYellowCard(): bool
+    {
+        return $this->yellowCard;
+    }
+
+    public function hasRedCard(): bool
+    {
+        return $this->redCard;
     }
 
     public function getInMinute(): int
