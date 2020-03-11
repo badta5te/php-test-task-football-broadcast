@@ -100,6 +100,10 @@ class MatchBuilder
                     }
                     break;
                 case 'finishPeriod':
+                    if ($period === 1 && $minute !== $endOfFirstTime = 45) {
+                        $this->addAdditionalMinutes($match->getHomeTeam(), $minute - $endOfFirstTime);
+                        $this->addAdditionalMinutes($match->getAwayTeam(), $minute - $endOfFirstTime);
+                    }
                     if ($period === 2) {
                         $this->finishMatch($match->getHomeTeam(), $minute);
                         $this->finishMatch($match->getAwayTeam(), $minute);
@@ -170,6 +174,13 @@ class MatchBuilder
     {
         foreach ($players as $number) {
             $team->getPlayer($number)->goToPlay($minute);
+        }
+    }
+
+    private function addAdditionalMinutes(Team $team, int $minute)
+    {
+        foreach ($team->getPlayersOnField() as $player) {
+            $player->addAdditionalTime($minute);
         }
     }
 

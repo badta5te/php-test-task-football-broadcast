@@ -15,6 +15,7 @@ class Player
     private bool $redCard;
     private int $inMinute;
     private int $outMinute;
+    private int $additionalMinutes;
 
     public function __construct(int $number, string $name, string $position)
     {
@@ -27,6 +28,7 @@ class Player
         $this->redCard = false;
         $this->inMinute = 0;
         $this->outMinute = 0;
+        $this->additionalMinutes = 0;
     }
 
     public function getNumber(): int
@@ -95,7 +97,12 @@ class Player
             return 0;
         }
 
-        return $this->outMinute - $this->inMinute;
+        return $this->outMinute - $this->inMinute + $this->additionalMinutes;
+    }
+
+    public function addAdditionalTime(int $minute): void
+    {
+        $this->additionalMinutes = $minute;
     }
 
     public function goToPlay(int $minute): void
@@ -112,6 +119,6 @@ class Player
 
     public function finishMatch(int $minute): void
     {
-        $this->outMinute = $minute + 1;
+        $this->outMinute = $minute;
     }
 }
